@@ -3,8 +3,8 @@ package tk.miskyle.talkroomdemo.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import tk.miskyle.talkroomdemo.token.Account;
-import tk.miskyle.talkroomdemo.token.TokenManager;
+import tk.miskyle.talkroomdemo.core.token.Account;
+import tk.miskyle.talkroomdemo.core.token.TokenManager;
 
 @RestController
 @RequestMapping("/token")

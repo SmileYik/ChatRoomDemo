@@ -1,7 +1,7 @@
-package tk.miskyle.talkroomdemo.permission;
+package tk.miskyle.talkroomdemo.core.permission;
 
-import tk.miskyle.talkroomdemo.setting.MysqlSetting;
-import tk.miskyle.talkroomdemo.setting.Settings;
+import tk.miskyle.talkroomdemo.core.setting.MysqlSetting;
+import tk.miskyle.talkroomdemo.core.setting.Settings;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,4 +1,4 @@
-package tk.miskyle.talkroomdemo.token;
+package tk.miskyle.talkroomdemo.core.token;
 
 import lombok.Synchronized;
 
@@ -7,7 +7,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.UUID;
 
 public class TokenManager {
   private static final HashMap<String, Account> accounts = new HashMap<>();

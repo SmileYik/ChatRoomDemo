@@ -1,12 +1,12 @@
-package tk.miskyle.talkroomdemo.message;
+package tk.miskyle.talkroomdemo.core.message;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import tk.miskyle.talkroomdemo.token.RSAEncrypt;
-import tk.miskyle.talkroomdemo.token.TokenManager;
+import tk.miskyle.talkroomdemo.core.token.RSAEncrypt;
+import tk.miskyle.talkroomdemo.core.token.TokenManager;
 
 import java.util.HashMap;
 

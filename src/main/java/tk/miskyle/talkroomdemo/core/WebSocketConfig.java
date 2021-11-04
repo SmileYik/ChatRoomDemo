@@ -1,4 +1,4 @@
-package tk.miskyle.talkroomdemo;
+package tk.miskyle.talkroomdemo.core;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

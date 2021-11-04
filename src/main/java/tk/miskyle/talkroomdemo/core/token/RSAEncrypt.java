@@ -1,4 +1,4 @@
-package tk.miskyle.talkroomdemo.token;
+package tk.miskyle.talkroomdemo.core.token;
 
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;

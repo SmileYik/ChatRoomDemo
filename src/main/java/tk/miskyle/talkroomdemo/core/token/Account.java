@@ -1,4 +1,4 @@
-package tk.miskyle.talkroomdemo.token;
+package tk.miskyle.talkroomdemo.core.token;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
