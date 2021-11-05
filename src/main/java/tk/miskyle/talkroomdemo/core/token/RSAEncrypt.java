@@ -35,15 +35,22 @@ public class RSAEncrypt {
     return null;
   }
 
-  public static String x509ToPKCS8(String publicKey) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
+  public static String x509ToPKCS8(String publicKey) throws NoSuchAlgorithmException,
+                                                            InvalidKeySpecException,
+                                                            IOException {
     // to pkcs1
-    RSAPublicKey key = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(Base64.getDecoder().decode(publicKey)));
+    RSAPublicKey key = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(
+            new X509EncodedKeySpec(Base64.getDecoder().decode(publicKey))
+    );
     SubjectPublicKeyInfo spkInfo = SubjectPublicKeyInfo.getInstance(key.getEncoded());
     ASN1Primitive primitive = spkInfo.parsePublicKey();
     // to pkcs8
-    org.bouncycastle.asn1.pkcs.RSAPublicKey rsaPublicKey = org.bouncycastle.asn1.pkcs.RSAPublicKey.getInstance(primitive.getEncoded());
+    org.bouncycastle.asn1.pkcs.RSAPublicKey rsaPublicKey =
+            org.bouncycastle.asn1.pkcs.RSAPublicKey.getInstance(primitive.getEncoded());
     KeyFactory kf = KeyFactory.getInstance("RSA");
-    PublicKey pkcs8 = kf.generatePublic(new RSAPublicKeySpec(rsaPublicKey.getModulus(), rsaPublicKey.getPublicExponent()));
+    PublicKey pkcs8 = kf.generatePublic(
+            new RSAPublicKeySpec(rsaPublicKey.getModulus(), rsaPublicKey.getPublicExponent())
+    );
     return new String(Base64.getEncoder().encode(pkcs8.getEncoded()));
   }
 

@@ -3,6 +3,7 @@ package tk.miskyle.talkroomdemo.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import tk.miskyle.talkroomdemo.api.group.chatter.Gender;
 import tk.miskyle.talkroomdemo.core.token.Account;
 import tk.miskyle.talkroomdemo.core.token.TokenManager;
 
@@ -18,6 +19,6 @@ public class TokenController {
       // TODO Exit And Retry To JOIN
       return null;
     }
-    return TokenManager.put(new Account(id, email, nickname, Account.Gender.valueOf(gender)));
+    return TokenManager.put(new Account(id, email, nickname, Gender.valueOf(gender)));
   }
 }
