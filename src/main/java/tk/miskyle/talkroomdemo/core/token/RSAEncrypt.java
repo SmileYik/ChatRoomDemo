@@ -54,7 +54,8 @@ public class RSAEncrypt {
                                                                       IllegalBlockSizeException,
                                                                       BadPaddingException {
     byte[] decodeKey = Base64.getDecoder().decode(publicKey);
-    RSAPublicKey key = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(decodeKey));
+    RSAPublicKey key = (RSAPublicKey) KeyFactory.getInstance("RSA")
+                                                .generatePublic(new X509EncodedKeySpec(decodeKey));
     Cipher cipher = Cipher.getInstance("RSA");
     cipher.init(Cipher.ENCRYPT_MODE, key);
     return new String(Base64.getEncoder().encode(cipher.doFinal(input.getBytes(StandardCharsets.UTF_8))));
@@ -67,7 +68,8 @@ public class RSAEncrypt {
                                                                             IllegalBlockSizeException,
                                                                             BadPaddingException {
     byte[] decodeKey = Base64.getDecoder().decode(publicKey);
-    RSAPublicKey key = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(decodeKey));
+    RSAPublicKey key = (RSAPublicKey) KeyFactory.getInstance("RSA")
+                                                .generatePublic(new X509EncodedKeySpec(decodeKey));
     Cipher cipher = Cipher.getInstance("RSA");
     cipher.init(Cipher.DECRYPT_MODE, key);
     return new String(cipher.doFinal(Base64.getDecoder().decode(input.getBytes(StandardCharsets.UTF_8))));
@@ -80,7 +82,8 @@ public class RSAEncrypt {
                                                                               IllegalBlockSizeException,
                                                                               BadPaddingException {
     byte[] decodeKey = Base64.getDecoder().decode(privateKey);
-    RSAPrivateKey key = (RSAPrivateKey) KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(decodeKey));
+    RSAPrivateKey key = (RSAPrivateKey) KeyFactory.getInstance("RSA")
+                                                  .generatePrivate(new PKCS8EncodedKeySpec(decodeKey));
     Cipher cipher = Cipher.getInstance("RSA");
     cipher.init(Cipher.DECRYPT_MODE, key);
     return new String(cipher.doFinal(Base64.getDecoder().decode(input.getBytes(StandardCharsets.UTF_8))));
@@ -93,7 +96,8 @@ public class RSAEncrypt {
                                                                               InvalidKeyException,
                                                                               InvalidKeySpecException {
     byte[] decodeKey = Base64.getDecoder().decode(privateKey);
-    RSAPrivateKey key = (RSAPrivateKey) KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(decodeKey));
+    RSAPrivateKey key = (RSAPrivateKey) KeyFactory.getInstance("RSA")
+                                                  .generatePrivate(new PKCS8EncodedKeySpec(decodeKey));
     Cipher cipher = Cipher.getInstance("RSA");
     cipher.init(Cipher.ENCRYPT_MODE, key);
     return new String(Base64.getEncoder().encode(cipher.doFinal(input.getBytes(StandardCharsets.UTF_8))));
