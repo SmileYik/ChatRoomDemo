@@ -41,10 +41,26 @@ public interface Chatter {
   boolean hasPermission(String permission);
 
   /**
+   * 检查用户是否拥有某种权限.
+   * @param permission 需要检查的权限.
+   * @param checkRoot 是否检查这个权限的根权限. <br/>
+   *                  一般来说, 假如一个权限为 abc.ef, 它的根权限就为 abc.* <br/>
+   *                  如果一个权限为 abc, 那么它就没有根权限.
+   * @return 如果这个用户含有这个指令或者含有根指令则返回true, 反之则返回false.
+   */
+  boolean hasPermission(String permission, boolean checkRoot);
+
+  /**
    * 为此用户增加权限.
    * @param permission 要增加的权限名.
    */
   void addPermission(String permission);
+
+  /**
+   * 删除一个用户的权限.
+   * @param permission 要删除的权限.
+   */
+  void removePermission(String permission);
 
   /**
    * 判断用户是否被封禁.

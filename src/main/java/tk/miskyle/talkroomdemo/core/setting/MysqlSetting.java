@@ -31,7 +31,7 @@ public class MysqlSetting {
     try (Connection connection = getConnection()) {
       // permission_table;
       String sql = String.format(temple, PERMISSION_TABLE,
-              "user_id int not null primary key, permission longtext not null");
+              "user_id int not null, permission text not null");
       connection.prepareStatement(sql).executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();

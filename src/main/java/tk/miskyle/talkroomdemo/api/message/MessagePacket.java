@@ -15,7 +15,7 @@ import java.util.HashMap;
  */
 @Data
 @RequiredArgsConstructor
-public class Message {
+public class MessagePacket {
   @NonNull private String message;
   /**
    * 发送者的id.
@@ -83,7 +83,7 @@ public class Message {
    * @param msgToken 用户公钥.
    * @return 加密过后的信息. 如果加密失败则返回空串.
    */
-  public static String encrypt(Message message, String msgToken) {
+  public static String encrypt(MessagePacket message, String msgToken) {
     String json = JSONObject.toJSONString(message);
     try {
       return RSAEncrypt.privateEncrypt(json, TokenManager.getPrivateKey(msgToken));
@@ -100,10 +100,10 @@ public class Message {
    * @return 解密后的信息, 如果解密失败则返回null.
    */
   @SneakyThrows
-  public static Message decrypt(String input, String msgToken) {
+  public static MessagePacket decrypt(String input, String msgToken) {
     return JSONObject.parseObject(
             RSAEncrypt.privateDecrypt(input, msgToken),
-            Message.class
+            MessagePacket.class
     );
   }
 }

@@ -37,6 +37,14 @@ public class TokenManager {
     return new HashSet<>(accounts.values()).stream().anyMatch(account -> account.getId() == id);
   }
 
+  public static Account getOnlineAccountById(int id) {
+    return new HashSet<>(accounts.values())
+            .stream()
+            .filter(account -> account.getId() == id)
+            .findFirst()
+            .orElse(null);
+  }
+
   private static String randomToken() {
     String[] keys;
     String token = null;
