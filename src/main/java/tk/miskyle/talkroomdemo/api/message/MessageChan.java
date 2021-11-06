@@ -1,4 +1,11 @@
 package tk.miskyle.talkroomdemo.api.message;
 
-public class MessageChan {
+import java.util.AbstractSequentialList;
+import java.util.LinkedList;
+
+public class MessageChan extends LinkedList<IMessage> {
+  public MessageChan append(IMessage msg) {
+    add(msg);
+    return this;
+  }
 }

@@ -1,17 +1,20 @@
 package tk.miskyle.talkroomdemo.api.message.sub;
 
+import lombok.Getter;
 import tk.miskyle.talkroomdemo.api.message.MessageType;
 import tk.miskyle.talkroomdemo.core.message.AMessage;
 
 import java.util.HashMap;
 
 public class ImageMessage extends AMessage {
-  private String imageBase64;
+  public static final String IMAGE_TYPE = "img_t";
+  @Getter
+  private final String imageType;
 
-  public ImageMessage() {
+  public ImageMessage(String imageType, String imageBase64) {
     super(MessageType.Image);
-    setRawMessage("[Image]");
-
+    this.imageType = imageType;
+    setRawMessage(imageBase64);
   }
 
   /**
@@ -20,6 +23,9 @@ public class ImageMessage extends AMessage {
    */
   @Override
   protected HashMap<String, Object> box() {
-    return null;
+    HashMap<String, Object> map = new HashMap<>();
+    map.put(IMAGE_TYPE, imageType);
+    map.put(AMessage.RAW_MESSAGE, getRawMessage());
+    return map;
   }
 }

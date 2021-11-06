@@ -1,10 +1,13 @@
-package tk.miskyle.talkroomdemo.api.message;
+package tk.miskyle.talkroomdemo.core.message;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import tk.miskyle.talkroomdemo.api.message.IMessage;
+import tk.miskyle.talkroomdemo.api.message.MessageChan;
 import tk.miskyle.talkroomdemo.core.token.RSAEncrypt;
 import tk.miskyle.talkroomdemo.core.token.TokenManager;
 
@@ -16,7 +19,7 @@ import java.util.HashMap;
 @Data
 @RequiredArgsConstructor
 public class MessagePacket {
-  @NonNull private String message;
+  @NonNull private MessageChan message;
   /**
    * 发送者的id.
    */
@@ -78,15 +81,58 @@ public class MessagePacket {
   }
 
   /**
+   * 将消息打包.
+   * @return 打包后的消息.
+   */
+  public String pack() {
+    JSONObject obj = new JSONObject();
+    JSONArray array = new JSONArray();
+    for (IMessage msg : message) {
+      array.add(((AMessage) msg).toJSON());
+    }
+    obj.put("message", array);
+    obj.put("senderId", senderId);
+    obj.put("sender", sender);
+    obj.put("system", system);
+    obj.put("opinions", opinions);
+    return obj.toJSONString();
+  }
+
+  public static MessagePacket unpack(String json) {
+    JSONObject obj = JSONObject.parseObject(json);
+    MessageChan messageChan = new MessageChan();
+    JSONArray array = obj.getJSONArray("message");
+    for (int i = 0; i < array.size(); ++i) {
+      messageChan.append(AMessage.unpack(array.getJSONObject(i)));
+    }
+    MessagePacket packet = new MessagePacket(messageChan);
+    if (obj.containsKey("sender")) {
+      packet.setSender(obj.getString("sender"));
+    }
+    if (obj.containsKey("senderId")) {
+      packet.setSenderId(obj.getIntValue("senderId"));
+    }
+    if (obj.containsKey("time")) {
+      packet.setTime(obj.getLongValue("time"));
+    }
+    if (obj.containsKey("system")) {
+      packet.setSystem(obj.getBoolean("system"));
+    }
+    if (obj.containsKey("opinions")) {
+      packet.setOpinions(obj.getObject("opinions", HashMap.class));
+    }
+    return packet;
+  }
+
+  /**
    * 加密信息.
    * @param message 要加密的消息.
    * @param msgToken 用户公钥.
    * @return 加密过后的信息. 如果加密失败则返回空串.
    */
-  public static String encrypt(MessagePacket message, String msgToken) {
-    String json = JSONObject.toJSONString(message);
+  public static String encrypt(String message, String msgToken) {
     try {
-      return RSAEncrypt.privateEncrypt(json, TokenManager.getPrivateKey(msgToken));
+      return RSAEncrypt.privateEncrypt(message, TokenManager.getPrivateKey(msgToken));
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -101,9 +147,6 @@ public class MessagePacket {
    */
   @SneakyThrows
   public static MessagePacket decrypt(String input, String msgToken) {
-    return JSONObject.parseObject(
-            RSAEncrypt.privateDecrypt(input, msgToken),
-            MessagePacket.class
-    );
+    return unpack(RSAEncrypt.privateDecrypt(input, msgToken));
   }
 }
