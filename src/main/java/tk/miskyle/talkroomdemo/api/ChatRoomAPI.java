@@ -19,6 +19,6 @@ public class ChatRoomAPI {
    * @return 正在运行的事件管理器.
    */
   public static EventManager getEventManager() {
-    return tk.miskyle.talkroomdemo.core.event.EventManager.getManager();
+    return tk.miskyle.talkroomdemo.core.plugin.event.EventManager.getManager();
   }
 }

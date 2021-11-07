@@ -1,4 +1,4 @@
-package tk.miskyle.talkroomdemo.core.event;
+package tk.miskyle.talkroomdemo.core.plugin.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

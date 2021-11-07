@@ -1,5 +1,8 @@
 package tk.miskyle.talkroomdemo.api.group.chatter;
 
+import tk.miskyle.talkroomdemo.api.group.Group;
+import tk.miskyle.talkroomdemo.api.message.MessageChan;
+
 import java.util.HashMap;
 
 public interface Chatter {
@@ -115,4 +118,8 @@ public interface Chatter {
    * @return 当前用户配置的副本.
    */
   HashMap<Object, Object> getProperties();
+
+  Group getGroup();
+
+  boolean isJoinedGroup();
 }

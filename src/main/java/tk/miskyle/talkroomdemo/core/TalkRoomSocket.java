@@ -2,10 +2,13 @@ package tk.miskyle.talkroomdemo.core;
 
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Component;
+import tk.miskyle.talkroomdemo.core.token.TokenManager;
 
 import javax.websocket.*;
+import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -20,6 +23,8 @@ public class TalkRoomSocket {
 
   @OnOpen
   public void onOpen(Session session) {
+    System.out.println(Arrays.toString(TokenManager.randomToken()));
+    System.out.println(session.getRequestParameterMap());
     this.session = session;
     preConnection.add(this);
   }

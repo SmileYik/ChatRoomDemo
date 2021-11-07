@@ -1,10 +1,13 @@
 package tk.miskyle.talkroomdemo.core.token;
 
 import lombok.Synchronized;
+import tk.miskyle.talkroomdemo.api.event.chatter.ChatterLoginEvent;
+import tk.miskyle.talkroomdemo.core.plugin.event.EventManager;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -14,9 +17,15 @@ public class TokenManager {
 
   @Synchronized
   public static String put(Account account) {
-    String token = randomToken();
-    accounts.put(token, account);
-    return token;
+    String[] keys = randomToken();
+    ChatterLoginEvent event = new ChatterLoginEvent(account, keys[0], keys[1]);
+    EventManager.getManager().callEvent(event);
+    if (!event.isCanceled()) {
+      accounts.put(keys[0], account);
+      TokenManager.keys.put(keys[0], keys[1]);
+      return keys[0];
+    }
+    return null;
   }
 
   @Synchronized
@@ -33,6 +42,10 @@ public class TokenManager {
     return keys.get(token);
   }
 
+  public static boolean containsKey(String token) {
+    return accounts.containsKey(token);
+  }
+
   public static boolean containsValue(int id) {
     return new HashSet<>(accounts.values()).stream().anyMatch(account -> account.getId() == id);
   }
@@ -45,7 +58,7 @@ public class TokenManager {
             .orElse(null);
   }
 
-  private static String randomToken() {
+  public static String[] randomToken() {
     String[] keys;
     String token = null;
     do {
@@ -56,7 +69,6 @@ public class TokenManager {
         e.printStackTrace();
       }
     } while (token == null || accounts.containsKey(token));
-    TokenManager.keys.put(token, keys[1]);
-    return token;
+    return new String[]{token, keys[1]};
   }
 }

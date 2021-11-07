@@ -3,6 +3,7 @@ package tk.miskyle.talkroomdemo.api.message;
 import lombok.Getter;
 
 public enum MessageType {
+  Command(0),
   Text(1),
   Image(2),
   Audio(3),

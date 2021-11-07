@@ -3,6 +3,9 @@ package tk.miskyle.talkroomdemo.core.token;
 import lombok.*;
 import tk.miskyle.talkroomdemo.api.group.chatter.Chatter;
 import tk.miskyle.talkroomdemo.api.group.chatter.Gender;
+import tk.miskyle.talkroomdemo.controller.component.MessageSocket;
+import tk.miskyle.talkroomdemo.core.group.Group;
+import tk.miskyle.talkroomdemo.core.message.MessagePacket;
 import tk.miskyle.talkroomdemo.core.setting.MysqlSetting;
 import tk.miskyle.talkroomdemo.core.setting.Settings;
 
@@ -22,6 +25,12 @@ public class Account implements Chatter {
   private final String nickname;
   @Getter
   private final Gender gender;
+  @Getter
+  @Setter
+  private MessageSocket socket;
+  @Getter
+  @Setter
+  private Group group;
   private final HashMap<Object, Object> properties = new HashMap<>();
 
   @Override
@@ -150,4 +159,15 @@ public class Account implements Chatter {
   public HashMap<Object, Object> getProperties() {
     return new HashMap<>(properties);
   }
+
+  @Override
+  public boolean isJoinedGroup() {
+    return group != null;
+  }
+
+  public void sendMessage(String encode) throws Exception {
+    getSocket().sendMessage(encode);
+  }
+
+
 }

@@ -2,6 +2,7 @@ package tk.miskyle.talkroomdemo.core.setting;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
+import tk.miskyle.talkroomdemo.core.group.GroupManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,6 +45,7 @@ public class Settings {
         JSONObject settings = JSONObject.parseObject(new FileInputStream(FILE_SETTING), JSONObject.class);
         mysqlSetting = settings.getObject("mysql", MysqlSetting.class);
         mysqlSetting.createTables();
+        new GroupManager(settings.getJSONArray("groups"));
       } catch (IOException e) {
         e.printStackTrace();
       }

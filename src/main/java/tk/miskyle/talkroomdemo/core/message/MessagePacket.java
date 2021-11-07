@@ -147,6 +147,6 @@ public class MessagePacket {
    */
   @SneakyThrows
   public static MessagePacket decrypt(String input, String msgToken) {
-    return unpack(RSAEncrypt.privateDecrypt(input, msgToken));
+    return unpack(RSAEncrypt.privateDecrypt(input, TokenManager.getPrivateKey(msgToken)));
   }
 }
