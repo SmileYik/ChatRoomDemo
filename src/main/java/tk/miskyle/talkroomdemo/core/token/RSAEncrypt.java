@@ -2,6 +2,8 @@ package tk.miskyle.talkroomdemo.core.token;
 
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
+import org.bouncycastle.util.Arrays;
+import org.jetbrains.annotations.NotNull;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -19,6 +21,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
 public class RSAEncrypt {
+  public static final int ENCRYPT_LENGTH = 116;
 
   public static String[] getNewKey() {
     try {
@@ -65,7 +68,7 @@ public class RSAEncrypt {
                                                 .generatePublic(new X509EncodedKeySpec(decodeKey));
     Cipher cipher = Cipher.getInstance("RSA");
     cipher.init(Cipher.ENCRYPT_MODE, key);
-    return new String(Base64.getEncoder().encode(cipher.doFinal(input.getBytes(StandardCharsets.UTF_8))));
+    return encrypt(input, cipher);
   }
 
   public static String publicDecrypt(String input, String publicKey) throws NoSuchAlgorithmException,
@@ -79,7 +82,7 @@ public class RSAEncrypt {
                                                 .generatePublic(new X509EncodedKeySpec(decodeKey));
     Cipher cipher = Cipher.getInstance("RSA");
     cipher.init(Cipher.DECRYPT_MODE, key);
-    return new String(cipher.doFinal(Base64.getDecoder().decode(input.getBytes(StandardCharsets.UTF_8))));
+    return decrypt(input, cipher);
   }
 
   public static String privateDecrypt(String input, String privateKey) throws NoSuchAlgorithmException,
@@ -93,7 +96,7 @@ public class RSAEncrypt {
                                                   .generatePrivate(new PKCS8EncodedKeySpec(decodeKey));
     Cipher cipher = Cipher.getInstance("RSA");
     cipher.init(Cipher.DECRYPT_MODE, key);
-    return new String(cipher.doFinal(Base64.getDecoder().decode(input.getBytes(StandardCharsets.UTF_8))));
+    return decrypt(input, cipher);
   }
 
   public static String privateEncrypt(String input, String privateKey) throws NoSuchAlgorithmException,
@@ -107,6 +110,28 @@ public class RSAEncrypt {
                                                   .generatePrivate(new PKCS8EncodedKeySpec(decodeKey));
     Cipher cipher = Cipher.getInstance("RSA");
     cipher.init(Cipher.ENCRYPT_MODE, key);
-    return new String(Base64.getEncoder().encode(cipher.doFinal(input.getBytes(StandardCharsets.UTF_8))));
+    return encrypt(input, cipher);
+  }
+
+  @NotNull
+  private static String decrypt(String input, Cipher cipher) throws IllegalBlockSizeException, BadPaddingException {
+    String[] lines = input.split("\n");
+    byte[][] bytes = new byte[lines.length][];
+    for (int i = 0; i < bytes.length; ++i) {
+      bytes[i] = cipher.doFinal(Base64.getDecoder().decode(lines[i].getBytes(StandardCharsets.UTF_8)));
+    }
+    return new String(Arrays.concatenate(bytes));
+  }
+
+  private static String encrypt(String input, Cipher cipher) throws IllegalBlockSizeException, BadPaddingException {
+    byte[] bytes = input.getBytes(StandardCharsets.UTF_8);
+    int length = 0;
+    StringBuilder sb = new StringBuilder();
+    while (length < bytes.length) {
+      int size = length + ENCRYPT_LENGTH > bytes.length ? bytes.length - length : ENCRYPT_LENGTH;
+      sb.append(new String(Base64.getEncoder().encode(cipher.doFinal(bytes, length, size)))).append('\n');
+      length += ENCRYPT_LENGTH;
+    }
+    return sb.toString();
   }
 }
